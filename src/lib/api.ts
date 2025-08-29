@@ -74,6 +74,7 @@ export interface Task {
 export interface GenerateTaskResponse {
   message: string;
   task: Chat;  // It's actually a Chat object from backend
+  contentExplanation?: string; // Rich markdown content from backend
   searchResults?: {
     bookResults: Book[];
     mcqResults: MCQ[];
@@ -109,6 +110,7 @@ export interface Chat {
       correctAnswer: string;
       explanation: string;
       completed: boolean;
+     
     }>;
   };
 }
