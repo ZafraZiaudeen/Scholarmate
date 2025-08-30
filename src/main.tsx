@@ -11,6 +11,8 @@ import ProtectedLayout from './layouts/protected.layout';
 import AITutorPage from './pages/ai.page';
 import { Provider } from 'react-redux';
 import { store } from './lib/store';
+import TasksPage from './pages/task.page';
+import TaskDetailPage from './pages/questions-for-task.page';
 
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -30,7 +32,12 @@ createRoot(document.getElementById('root')!).render(
             <Route element={<ProtectedLayout/>}> 
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/ai" element={<AITutorPage />} />
+              <Route path="/task" element={<TasksPage/>} />
+             <Route path="/task/:taskId" element={<TaskDetailPage />} />
+
             </Route>
+            <Route path="*" element={<h1 className='text-center mt-20 text-3xl font-bold text-red-600'>404 - Page Not Found</h1>} />
+
           </Routes>
         </BrowserRouter>
       </ClerkProvider>

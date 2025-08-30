@@ -162,7 +162,7 @@ export const api = createApi({
 
     saveChatAsTask: builder.mutation<ApiResponse<Task>, string>({
       query: (chatId) => ({
-        url: `tasks/chat/${chatId}/save-as-task`,
+        url: `task/chat/${chatId}/save-as-task`,
         method: "POST",
       }),
       invalidatesTags: [TAGS.TASKS, TAGS.CHATS],
@@ -212,18 +212,31 @@ export const api = createApi({
     }),
 
     // Task related endpoints
-    getTasks: builder.query<ApiResponse<Task[]>, void>({
-      query: () => "tasks",
-      transformResponse: (response: ApiResponse<Task[]>) => response,
-      providesTags: [TAGS.TASKS],
-    }),
+    getTasks: builder.query<ApiResponse<Task[]>, string>({
+  query: (userId) => `task/user/${userId}`,
+  transformResponse: (response: { tasks: Task[] } | ApiResponse<Task[]>) => {
+    // Handle both possible response formats
+    if ('success' in response && 'data' in response) {
+      return response; // Already in ApiResponse format
+    }
+    // Convert { tasks: Task[] } to ApiResponse<Task[]>
+    return {
+      success: true,
+      data: response.tasks || [],
+      message: response.tasks ? 'Tasks fetched successfully' : 'No tasks found',
+    };
+  },
+  providesTags: [TAGS.TASKS],
+}),
 
-    getTaskById: builder.query<ApiResponse<Task>, string>({
-      query: (id) => `tasks/${id}`,
-      transformResponse: (response: ApiResponse<Task>) => response,
-      providesTags: (_result, _err, id) => [{ type: TAGS.TASKS, id }],
-    }),
-
+   getTaskById: builder.query<ApiResponse<Task>, string>({
+  query: (id) => `task/${id}`,
+  transformResponse: (response: { task: Task } | ApiResponse<Task>) => {
+    if ('success' in response) return response;
+    return { success: true, data: response.task, message: "Task fetched successfully" };
+  },
+  providesTags: (_result, _err, id) => [{ type: TAGS.TASKS, id }],
+}),
     // Book embeddings
     generateBookEmbeddings: builder.mutation<ApiResponse<Task>, string>({
       query: (bookId) => ({
@@ -233,6 +246,14 @@ export const api = createApi({
       invalidatesTags: [TAGS.BOOKS],
     }),
 
+updateTaskProgress: builder.mutation<ApiResponse<Task>, { taskId: string; questionId?: string; isCorrect?: boolean; completed?: boolean }>({
+  query: (body) => ({
+    url: "task/progress",
+    method: "PATCH",
+    body,
+  }),
+  invalidatesTags: [TAGS.TASKS],
+}),
     // Task generation
    generateTask: builder.mutation<GenerateTaskResponse, { query: string; section?: string; maxBooks?: number; maxQuestions?: number }>({
   query: (body) => ({
@@ -260,4 +281,5 @@ export const {
   useGetChatByIdQuery,
   usePostChatMutation,
   useSaveChatAsTaskMutation,
+  useUpdateTaskProgressMutation,
 } = api;
