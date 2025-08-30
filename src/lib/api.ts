@@ -114,12 +114,56 @@ export interface Chat {
     }>;
   };
 }
+
+export interface PastPaper {
+  _id: string;
+  title: string;
+  year: number;
+  type: 'part 1' | 'part 2' | 'both';
+  paperType: 'model paper' | 'past paper';
+  duration?: number;
+  description?: string;
+  paperFileId: string;
+  answerSheetFileId?: string;
+  status: 'Draft' | 'Published';
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  role: 'user' | 'admin';
+  createdAt: number;
+  lastSignInAt?: number;
+  imageUrl?: string;
+  banned: boolean;
+  locked: boolean;
+}
+
+export interface UserListResponse {
+  success: boolean;
+  data: User[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
 // Add to TAGS
 export const TAGS = {
   BOOKS: 'Books',
   MCQS: 'MCQs',
   TASKS: 'Tasks',
-  CHATS: 'Chats'
+  CHATS: 'Chats',
+  PAPERS: 'Papers',
+  USERS: 'Users'
 } as const;
 
 export const api = createApi({
@@ -135,7 +179,7 @@ export const api = createApi({
     }
   }),
   
-  tagTypes: [TAGS.BOOKS, TAGS.MCQS, TAGS.TASKS, TAGS.CHATS],
+  tagTypes: [TAGS.BOOKS, TAGS.MCQS, TAGS.TASKS, TAGS.CHATS, TAGS.PAPERS, TAGS.USERS],
   
   endpoints: (builder) => ({
     // Chat related endpoints
@@ -263,6 +307,103 @@ updateTaskProgress: builder.mutation<ApiResponse<Task>, { taskId: string; questi
   }),
   invalidatesTags: [TAGS.TASKS],
 }),
+
+    // Paper related endpoints
+    getPapers: builder.query<ApiResponse<PastPaper[]>, { year?: string; type?: string; paperType?: string; status?: string }>({
+      query: ({ year, type, paperType, status }) => {
+        const params = new URLSearchParams();
+        if (year) params.append('year', year);
+        if (type) params.append('type', type);
+        if (paperType) params.append('paperType', paperType);
+        if (status) params.append('status', status);
+        return `paper?${params.toString()}`;
+      },
+      transformResponse: (response: ApiResponse<PastPaper[]>) => response,
+      providesTags: [TAGS.PAPERS],
+    }),
+
+    getPaperById: builder.query<ApiResponse<PastPaper>, string>({
+      query: (id) => `paper/${id}`,
+      transformResponse: (response: ApiResponse<PastPaper>) => response,
+      providesTags: (_result, _err, id) => [{ type: TAGS.PAPERS, id }],
+    }),
+
+    uploadPaper: builder.mutation<ApiResponse<PastPaper>, FormData>({
+      query: (formData) => ({
+        url: "paper/upload",
+        method: "POST",
+        body: formData,
+      }),
+      invalidatesTags: [TAGS.PAPERS],
+    }),
+
+    updatePaper: builder.mutation<ApiResponse<PastPaper>, { id: string; formData: FormData }>({
+      query: ({ id, formData }) => ({
+        url: `paper/${id}`,
+        method: "PATCH",
+        body: formData,
+      }),
+      invalidatesTags: [TAGS.PAPERS],
+    }),
+
+    deletePaper: builder.mutation<ApiResponse<void>, string>({
+      query: (id) => ({
+        url: `paper/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [TAGS.PAPERS],
+    }),
+
+    downloadPaperFile: builder.query<Blob, string>({
+      query: (fileId) => ({
+        url: `paper/download/${fileId}`,
+        responseHandler: (response) => response.blob(),
+      }),
+    }),
+
+    // User management endpoints
+    getUsers: builder.query<UserListResponse, { page?: number; limit?: number; search?: string }>({
+      query: ({ page = 1, limit = 10, search = "" }) => {
+        const params = new URLSearchParams();
+        params.append('page', page.toString());
+        params.append('limit', limit.toString());
+        if (search) params.append('search', search);
+        return `user?${params.toString()}`;
+      },
+      transformResponse: (response: UserListResponse) => response,
+      providesTags: [TAGS.USERS],
+    }),
+
+    getUserById: builder.query<ApiResponse<User>, string>({
+      query: (userId) => `user/${userId}`,
+      transformResponse: (response: ApiResponse<User>) => response,
+      providesTags: (_result, _err, id) => [{ type: TAGS.USERS, id }],
+    }),
+
+    updateUserRole: builder.mutation<ApiResponse<User>, { userId: string; role: 'user' | 'admin' }>({
+      query: ({ userId, role }) => ({
+        url: `user/${userId}/role`,
+        method: "PATCH",
+        body: { role },
+      }),
+      invalidatesTags: [TAGS.USERS],
+    }),
+
+    toggleUserBan: builder.mutation<ApiResponse<User>, string>({
+      query: (userId) => ({
+        url: `user/${userId}/ban`,
+        method: "PATCH",
+      }),
+      invalidatesTags: [TAGS.USERS],
+    }),
+
+    deleteUser: builder.mutation<ApiResponse<void>, string>({
+      query: (userId) => ({
+        url: `user/${userId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [TAGS.USERS],
+    }),
   }),
 });
 
@@ -282,4 +423,15 @@ export const {
   usePostChatMutation,
   useSaveChatAsTaskMutation,
   useUpdateTaskProgressMutation,
+  useGetPapersQuery,
+  useGetPaperByIdQuery,
+  useUploadPaperMutation,
+  useUpdatePaperMutation,
+  useDeletePaperMutation,
+  useDownloadPaperFileQuery,
+  useGetUsersQuery,
+  useGetUserByIdQuery,
+  useUpdateUserRoleMutation,
+  useToggleUserBanMutation,
+  useDeleteUserMutation,
 } = api;

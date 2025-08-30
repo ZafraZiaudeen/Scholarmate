@@ -120,7 +120,7 @@ export default function TaskDetailPage() {
       setSteps(newSteps);
       setTaskCompleted(task.progress.completed);
       setScore(task.progress.score);
-      console.log("Task Questions:", task.content.questions); // Debug task data
+      console.log("Task Questions:", task.content.questions);
     }
   }, [task]);
 

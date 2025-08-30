@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Brain, Menu } from "lucide-react"
+import { Brain, Menu, MessageSquare } from "lucide-react"
 import { Link } from "react-router-dom"
 import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
 
@@ -17,6 +17,12 @@ export function Header() {
         <div className="flex items-center gap-4">
           <SignedIn>
             <UserButton />
+            <Link to="/contact">
+              <Button variant="outline" className="hidden sm:inline-flex bg-transparent">
+                <MessageSquare className="h-4 w-4 mr-2" />
+                Contact
+              </Button>
+            </Link>
             <Link to="/dashboard">
               <Button variant="outline" className="hidden sm:inline-flex bg-transparent">
                 Dashboard

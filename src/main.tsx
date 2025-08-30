@@ -13,6 +13,15 @@ import { Provider } from 'react-redux';
 import { store } from './lib/store';
 import TasksPage from './pages/task.page';
 import TaskDetailPage from './pages/questions-for-task.page';
+import PastPapersPage from './pages/past-papers.page';
+import AdminProtectedLayout from './layouts/admin-protected.layout';
+import AdminLayout from './layouts/admin.layout';
+import PapersManagement from './pages/admin/paper.page';
+import UsersManagement from './pages/admin/users.page';
+import RootLayout from './layouts/root-layout.layout';
+import AdminDashboard from './pages/admin/dashboard.page';
+import ContactPage from './pages/contact.page';
+import AdminContactPage from './pages/admin/contact.page';
 
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -26,6 +35,7 @@ createRoot(document.getElementById('root')!).render(
       <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
         <BrowserRouter>
           <Routes>
+            <Route element={<RootLayout/>}> 
             <Route path="/" element={<HomePage />} />
             <Route path="/sign-in" element={<SignInPage />} />
             <Route path="/sign-up" element={<SignUpPage />} />
@@ -33,11 +43,24 @@ createRoot(document.getElementById('root')!).render(
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/ai" element={<AITutorPage />} />
               <Route path="/task" element={<TasksPage/>} />
-             <Route path="/task/:taskId" element={<TaskDetailPage />} />
-
+              <Route path="/task/:taskId" element={<TaskDetailPage />} />
+              <Route path="/past-papers" element={<PastPapersPage />} />
+              <Route path="/contact" element={<ContactPage />} />
             </Route>
+            
+            {/* Admin Routes */}
+            <Route element={<AdminProtectedLayout />}>
+              <Route element={<AdminLayout />}>
+                <Route path="/admin" element={<AdminDashboard/>} />
+                <Route path="/admin/dashboard" element={<AdminDashboard/>} />
+                <Route path="/admin/papers" element={<PapersManagement />} />
+                <Route path="/admin/users" element={<UsersManagement />} />
+                <Route path="/admin/contacts" element={<AdminContactPage />} />
+              </Route>
+            </Route>
+         
             <Route path="*" element={<h1 className='text-center mt-20 text-3xl font-bold text-red-600'>404 - Page Not Found</h1>} />
-
+</Route>
           </Routes>
         </BrowserRouter>
       </ClerkProvider>
