@@ -14,6 +14,8 @@ import { store } from './lib/store';
 import TasksPage from './pages/task.page';
 import TaskDetailPage from './pages/questions-for-task.page';
 import PastPapersPage from './pages/past-papers.page';
+import VideosPage from './pages/videos.page';
+import AchievementsPage from './pages/achievements.page';
 import AdminProtectedLayout from './layouts/admin-protected.layout';
 import AdminLayout from './layouts/admin.layout';
 import PapersManagement from './pages/admin/paper.page';
@@ -22,6 +24,10 @@ import RootLayout from './layouts/root-layout.layout';
 import AdminDashboard from './pages/admin/dashboard.page';
 import ContactPage from './pages/contact.page';
 import AdminContactPage from './pages/admin/contact.page';
+import AdminAnalyticsPage from './pages/admin/analytics.page';
+import AdminSettingsPage from './pages/admin/settings.page';
+import VideosManagement from './pages/admin/videos.page';
+import MainLayout from './layouts/main.layout';
 
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -35,19 +41,29 @@ createRoot(document.getElementById('root')!).render(
       <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
         <BrowserRouter>
           <Routes>
-            <Route element={<RootLayout/>}> 
+            <Route element={<RootLayout/>}>
+
             <Route path="/" element={<HomePage />} />
             <Route path="/sign-in" element={<SignInPage />} />
             <Route path="/sign-up" element={<SignUpPage />} />
-            <Route element={<ProtectedLayout/>}> 
+            
+            {/* Public Contact Page - accessible without authentication */}
+            <Route element={<MainLayout/>}>
+              <Route path="/contact" element={<ContactPage />} />
+            </Route>
+            
+            <Route element={<ProtectedLayout/>}>
+            <Route element={<MainLayout/>}>
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/ai" element={<AITutorPage />} />
               <Route path="/task" element={<TasksPage/>} />
               <Route path="/task/:taskId" element={<TaskDetailPage />} />
               <Route path="/past-papers" element={<PastPapersPage />} />
-              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/videos" element={<VideosPage />} />
+              <Route path="/achievements" element={<AchievementsPage />} />
+              <Route path="/dashboard/*" element={<DashboardPage/>} />
             </Route>
-            
+             </Route>
             {/* Admin Routes */}
             <Route element={<AdminProtectedLayout />}>
               <Route element={<AdminLayout />}>
@@ -56,6 +72,9 @@ createRoot(document.getElementById('root')!).render(
                 <Route path="/admin/papers" element={<PapersManagement />} />
                 <Route path="/admin/users" element={<UsersManagement />} />
                 <Route path="/admin/contacts" element={<AdminContactPage />} />
+                <Route path="/admin/videos" element={<VideosManagement />} />
+                <Route path="/admin/analytics" element={<AdminAnalyticsPage />} />
+                <Route path="/admin/settings" element={<AdminSettingsPage/>} />
               </Route>
             </Route>
          

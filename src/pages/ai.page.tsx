@@ -6,8 +6,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Brain, Send, BookOpen, Code, Lightbulb, MessageCircle, Sparkles, Clock, Save } from "lucide-react";
+import { Brain, Send, BookOpen, Code, Lightbulb, MessageCircle, Sparkles, Save } from "lucide-react";
 import { useGenerateTaskMutation, useSaveChatAsTaskMutation, Chat } from "@/lib/api";
+import Header from "@/components/Header";
 import "@/components/markdown-styles.css";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
@@ -223,38 +224,13 @@ export default function AITutorPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      {/* Header Section remains unchanged */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <Brain className="h-8 w-8 text-cyan-600" />
-                <span className="text-xl font-bold text-slate-900">AI Tutor</span>
-              </div>
-              <Badge variant="secondary" className="bg-cyan-100 text-cyan-700">
-                Online
-              </Badge>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Button variant="outline" size="sm">
-                <BookOpen className="h-4 w-4 mr-2" />
-                Study Materials
-              </Button>
-              <Button variant="outline" size="sm">
-                <Clock className="h-4 w-4 mr-2" />
-                Session History
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Sidebar: Quick Topics and Study Tips remain unchanged */}
-          <aside className="lg:col-span-1">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-8">
+          {/* Sidebar: Quick Topics and Study Tips - responsive */}
+          <aside className="lg:col-span-1 order-2 lg:order-1">
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Quick Topics</CardTitle>
@@ -304,15 +280,15 @@ export default function AITutorPage() {
           </aside>
 
           {/* Chat Interface */}
-          <section className="lg:col-span-3 space-y-4">
+          <section className="lg:col-span-3 space-y-4 order-1 lg:order-2">
             <Card>
-              <CardHeader>
-                <CardTitle className="text-2xl font-bold text-slate-900">Chat with AI Tutor</CardTitle>
-                <CardDescription className="text-slate-600">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-xl sm:text-2xl font-bold text-slate-900">Chat with AI Tutor</CardTitle>
+                <CardDescription className="text-slate-600 text-sm sm:text-base">
                   Get instant help with your O/L IT Web Design questions
                 </CardDescription>
               </CardHeader>
-              <ScrollArea className="h-[calc(100vh-24rem)] px-6">
+              <ScrollArea className="h-[50vh] sm:h-[60vh] lg:h-[calc(100vh-24rem)] px-3 sm:px-6">
                 <div className="space-y-6 py-4">
                   {chatHistory.map((chat, index) => (
                     <div key={index} className={`flex ${chat.type === "user" ? "justify-end" : "justify-start"}`}>
@@ -321,7 +297,7 @@ export default function AITutorPage() {
                           chat.type === "user"
                             ? "bg-gradient-to-r from-cyan-500 to-cyan-600 text-white"
                             : "bg-white border border-slate-200"
-                        } rounded-lg p-4 max-w-[80%]`}
+                        } rounded-lg p-3 sm:p-4 max-w-[90%] sm:max-w-[80%]`}
                       >
                         <div className="flex items-center space-x-2 mb-2">
                           {chat.type === "ai" ? (
@@ -433,9 +409,9 @@ export default function AITutorPage() {
               </ScrollArea>
             </Card>
 
-            {/* Message Input Area remains unchanged */}
+            {/* Message Input Area - responsive */}
             <Card className="mt-4">
-              <CardContent className="p-4">
+              <CardContent className="p-3 sm:p-4">
                 <div className="flex space-x-2">
                   <Input
                     placeholder="Ask me anything about O/L IT Web Design..."
@@ -456,38 +432,38 @@ export default function AITutorPage() {
                     <Send className="h-4 w-4" />
                   </Button>
                 </div>
-                <div className="flex flex-wrap gap-2 mt-3">
+                <div className="flex flex-wrap gap-1 sm:gap-2 mt-3">
                   <Button
                     variant="outline"
                     size="sm"
-                    className="text-xs bg-transparent"
+                    className="text-xs bg-transparent px-2 sm:px-3"
                     onClick={() => handleQuickTopic("Explain CSS Grid")}
                   >
-                    Explain CSS Grid
+                    CSS Grid
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="text-xs bg-transparent"
+                    className="text-xs bg-transparent px-2 sm:px-3"
                     onClick={() => handleQuickTopic("JavaScript functions")}
                   >
-                    JavaScript functions
+                    JS Functions
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="text-xs bg-transparent"
+                    className="text-xs bg-transparent px-2 sm:px-3"
                     onClick={() => handleQuickTopic("2022 past paper Q5")}
                   >
-                    2022 past paper Q5
+                    Past Paper Q5
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="text-xs bg-transparent"
+                    className="text-xs bg-transparent px-2 sm:px-3"
                     onClick={() => handleQuickTopic("HTML semantic tags")}
                   >
-                    HTML semantic tags
+                    HTML Tags
                   </Button>
                 </div>
               </CardContent>

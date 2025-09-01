@@ -19,7 +19,7 @@ interface ContactForm {
 }
 
 export default function ContactPage() {
-  const { getToken } = useAuth();
+  const { getToken, isSignedIn } = useAuth();
   const { user } = useUser();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -47,7 +47,7 @@ export default function ContactPage() {
     setIsSubmitting(true);
 
     try {
-      const token = await getToken();
+      const token = isSignedIn ? await getToken() : null;
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/contact/submit`, {
         method: "POST",
         headers: {
