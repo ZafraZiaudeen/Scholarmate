@@ -65,6 +65,8 @@ export interface Task {
     score: number;
     totalQuestions: number;
     correctAnswers: number;
+    timeSpent?: number;
+    pointsEarned?: number;
   };
   dueDate?: string;
   priority?: 'low' | 'medium' | 'high';
@@ -552,7 +554,7 @@ export const api = createApi({
       invalidatesTags: [TAGS.BOOKS],
     }),
 
-updateTaskProgress: builder.mutation<ApiResponse<Task>, { taskId: string; questionId?: string; isCorrect?: boolean; completed?: boolean; userAnswer?: string }>({
+updateTaskProgress: builder.mutation<ApiResponse<Task>, { taskId: string; questionId?: string; isCorrect?: boolean; completed?: boolean; userAnswer?: string; timeSpent?: number }>({
   query: (body) => ({
     url: "task/progress",
     method: "PATCH",

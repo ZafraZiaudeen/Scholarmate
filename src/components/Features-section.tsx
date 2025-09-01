@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Brain, BookOpen, CheckSquare, TrendingUp, MessageCircle, Target } from "lucide-react"
+import { Brain, BookOpen,  MessageCircle,  Play, Trophy, Mail } from "lucide-react"
 
 const features = [
   {
@@ -11,20 +11,8 @@ const features = [
   {
     icon: BookOpen,
     title: "Past Paper Practice",
-    description: "Access thousands of past exam questions with detailed solutions and explanations.",
+    description: "Access thousands of past exam questions with answersheet.",
     color: "text-accent",
-  },
-  {
-    icon: CheckSquare,
-    title: "Task Management",
-    description: "Organize your learning with structured tasks and step-by-step progress tracking.",
-    color: "text-chart-3",
-  },
-  {
-    icon: TrendingUp,
-    title: "Progress Analytics",
-    description: "Monitor your improvement with detailed analytics and performance insights.",
-    color: "text-chart-4",
   },
   {
     icon: MessageCircle,
@@ -33,10 +21,22 @@ const features = [
     color: "text-chart-2",
   },
   {
-    icon: Target,
-    title: "Personalized Learning",
-    description: "Adaptive learning paths that focus on your weak areas and strengthen your skills.",
-    color: "text-chart-5",
+    icon: Play,
+    title: "Video Learning",
+    description: "Watch curated video tutorials covering key ICT topics and concepts.",
+    color: "text-red-500",
+  },
+  {
+    icon: Trophy,
+    title: "Achievements & Gamification",
+    description: "Earn badges, unlock achievements, and stay motivated with gamified learning.",
+    color: "text-yellow-500",
+  },
+  {
+    icon: Mail,
+    title: "Contact Support",
+    description: "Get help from our support team for any questions or technical issues.",
+    color: "text-blue-500",
   },
 ]
 
@@ -50,7 +50,7 @@ export function FeaturesSection() {
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Our comprehensive platform combines AI intelligence with proven learning methodologies to help you master
-            Web Design concepts effectively.
+            ICT concepts effectively.
           </p>
         </div>
 

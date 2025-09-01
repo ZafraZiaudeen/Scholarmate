@@ -14,7 +14,6 @@ import {
   CheckCircle2,
   XCircle,
   Lightbulb,
-  MessageCircle,
   Clock,
   Star,
   ChevronRight,
@@ -72,6 +71,8 @@ interface TaskDetail {
     score: number;
     totalQuestions: number;
     correctAnswers: number;
+    timeSpent?: number;
+    pointsEarned?: number;
   };
   dueDate?: string;
 }
@@ -152,7 +153,28 @@ export default function TaskDetailPage() {
       
       setSteps(newSteps);
       setTaskCompleted(task.progress.completed);
-      setScore(task.progress.score);
+      setScore(task.progress.pointsEarned || 0); // Use pointsEarned instead of score
+  
+      let initialTime = 0;
+      if (task.progress.completed) {
+        // For completed tasks, use the final time from backend
+        initialTime = task.progress.timeSpent || 0;
+        setTimerActive(false);
+      } else {
+        // For active tasks, try localStorage first, then backend
+        const savedTime = localStorage.getItem(`task-time-${taskId}`);
+        initialTime = savedTime ? parseInt(savedTime) : (task.progress.timeSpent || 0);
+        setTimerActive(true);
+      }
+      
+      console.log("Timer initialization:", { 
+        completed: task.progress.completed, 
+        backendTime: task.progress.timeSpent, 
+        savedTime: localStorage.getItem(`task-time-${taskId}`),
+        initialTime,
+        timerActive: !task.progress.completed
+      });
+      setTimeSpent(initialTime);
       
       // Build task results for completed tasks
       if (task.progress.completed) {
@@ -183,6 +205,8 @@ export default function TaskDetailPage() {
       console.log("Task Questions:", task.content.questions);
       console.log("Loaded answers:", mergedAnswers);
     }
+    
+    return () => {}; // Return empty cleanup function
   }, [task, taskId]);
 
   useEffect(() => {
@@ -191,14 +215,28 @@ export default function TaskDetailPage() {
       return;
     }
 
-    const timer = setInterval(() => {
-      if (timerActive && !taskCompleted) {
-        setTimeSpent((prev) => prev + 1);
-      }
-    }, 1000);
+    // Start timer if task is not completed and timer is active
+    if (!taskCompleted && timerActive) {
+      console.log("Starting timer");
+      const timer = setInterval(() => {
+        setTimeSpent((prev) => {
+          const newTime = prev + 1;
+          // Save time to localStorage every 10 seconds
+          if (newTime % 10 === 0) {
+            localStorage.setItem(`task-time-${taskId}`, newTime.toString());
+          }
+          return newTime;
+        });
+      }, 1000);
 
-    return () => clearInterval(timer);
-  }, [taskId, error, navigate, timerActive, taskCompleted]);
+      return () => {
+        console.log("Clearing timer");
+        clearInterval(timer);
+      };
+    }
+
+    return () => {}; // Cleanup function for other cases
+  }, [taskId, error, navigate, timerActive, taskCompleted]); // Removed timeSpent from dependencies to prevent timer restart
 
   if (isLoading) {
     return (
@@ -275,7 +313,7 @@ export default function TaskDetailPage() {
       }));
 
       if (isCorrect) {
-        setScore((prev) => prev + currentStep.points);
+        setScore((prev) => prev + 10); // 10 points per correct answer
         setTaskResults(prev => ({ ...prev, correctAnswers: prev.correctAnswers + 1 }));
       }
       
@@ -302,22 +340,37 @@ export default function TaskDetailPage() {
 
   const handleNextStep = async () => {
     if (isLastStep) {
-      // Stop the timer
-      setTimerActive(false);
-      
-      // Calculate final results
-      const totalQuestions = steps.filter(step => step.type === 'mcq').length;
-      setTaskResults(prev => ({ ...prev, totalQuestions }));
-      
-      await updateTaskProgress({
-        taskId: task._id,
-        completed: true,
-      });
-      setTaskCompleted(true);
+      // Don't auto-complete here, let user explicitly finish
+      setCurrentStepIndex((prev) => prev + 1);
+      setShowFeedback(false);
     } else {
       setCurrentStepIndex((prev) => prev + 1);
       setShowFeedback(false);
     }
+  };
+
+  const handleCompleteTask = async () => {
+    console.log("Completing task with timeSpent:", timeSpent);
+    // Stop the timer
+    setTimerActive(false);
+
+    // Calculate final results
+    const totalQuestions = steps.filter(step => step.type === 'mcq').length;
+    setTaskResults(prev => ({ ...prev, totalQuestions }));
+
+    // Save the current timeSpent before API call to prevent race condition
+    const finalTimeSpent = timeSpent;
+
+    await updateTaskProgress({
+      taskId: task._id,
+      completed: true,
+      timeSpent: finalTimeSpent, // Send the actual time spent
+    });
+
+    // Update localStorage with final time
+    localStorage.setItem(`task-time-${taskId}`, finalTimeSpent.toString());
+
+    setTaskCompleted(true);
   };
 
   const formatTime = (seconds: number) => {
@@ -431,9 +484,7 @@ export default function TaskDetailPage() {
                 <Button variant="outline" onClick={handleReviewAnswers} className="flex-1">
                   Review Questions Again
                 </Button>
-                <Button variant="outline" onClick={() => navigate("/ai")} className="flex-1">
-                  Ask AI Tutor
-                </Button>
+               
               </div>
             </CardContent>
           </Card>
@@ -789,12 +840,8 @@ export default function TaskDetailPage() {
           </CardContent>
         </Card>
 
-        {/* Actions */}
         <div className="flex items-center justify-between">
-          <Button variant="outline" className="flex items-center gap-2 bg-transparent">
-            <MessageCircle className="h-4 w-4" />
-            Ask AI Tutor
-          </Button>
+          
 
           <div className="flex items-center gap-3">
             {currentStep.type === "content" ? (
@@ -813,7 +860,7 @@ export default function TaskDetailPage() {
                 </Button>
                 <Button onClick={() => {
                   if (isLastStep) {
-                    setTaskCompleted(true);
+                    // Don't auto-complete, just go back to results
                     setReviewMode(false);
                   } else {
                     setCurrentStepIndex(prev => prev + 1);
@@ -832,7 +879,17 @@ export default function TaskDetailPage() {
                 Submit Answer
               </Button>
             ) : (
-              <Button onClick={handleNextStep} className="flex items-center gap-2">
+              <Button 
+                onClick={() => {
+                  console.log("Button clicked, isLastStep:", isLastStep, "timeSpent:", timeSpent);
+                  if (isLastStep) {
+                    handleCompleteTask();
+                  } else {
+                    handleNextStep();
+                  }
+                }} 
+                className="flex items-center gap-2"
+              >
                 {isLastStep ? "Complete Task" : "Next Step"}
                 <ChevronRight className="h-4 w-4" />
               </Button>
@@ -840,25 +897,7 @@ export default function TaskDetailPage() {
           </div>
         </div>
 
-        {/* AI Assistant */}
-        <Card className="mt-6 bg-gradient-to-r from-cyan-50 to-blue-50 border-cyan-200">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-cyan-500 rounded-full">
-                <MessageCircle className="h-4 w-4 text-white" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-medium text-gray-900">Need help with this step?</p>
-                <p className="text-xs text-gray-600">
-                  Get hints, explanations, or step-by-step guidance from your AI tutor.
-                </p>
-              </div>
-              <Button size="sm" variant="outline">
-                Get Help
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+   
       </div>
     </div>
   );

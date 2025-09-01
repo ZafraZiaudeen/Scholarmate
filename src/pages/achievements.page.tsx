@@ -415,7 +415,7 @@ export default function AchievementsPage() {
                         </div>
                         <div className="flex-1">
                           <p className="font-medium text-slate-900">
-                            {entry.userId === user.id ? 'You' : `Student ${entry.userId.slice(-4)}`}
+                            {entry.userId === user.id ? 'You' : (entry.fullName || `User ${entry.userId.slice(-4)}`)}
                           </p>
                           <p className="text-sm text-slate-600">
                             Level {entry.level} • {entry.tasksCompleted} tasks • {entry.averageAccuracy.toFixed(1)}% accuracy

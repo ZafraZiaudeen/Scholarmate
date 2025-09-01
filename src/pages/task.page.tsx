@@ -24,21 +24,21 @@ export default function TasksPage() {
   const totalTasks = tasks.length;
   const totalPoints = tasks
     .filter((task) => task.progress?.completed)
-    .reduce((sum, task) => sum + (task.progress?.score || 0), 0);
+    .reduce((sum, task) => sum + (task.progress?.pointsEarned || 0), 0);
   const progressPercentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
 
-  const getDifficultyColor = (priority: string) => {
-    switch (priority?.toLowerCase()) {
-      case "low":
-        return "bg-green-100 text-green-800";
-      case "medium":
-        return "bg-yellow-100 text-yellow-800";
-      case "high":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
+  // const getDifficultyColor = (priority: string) => {
+  //   switch (priority?.toLowerCase()) {
+  //     case "low":
+  //       return "bg-green-100 text-green-800";
+  //     case "medium":
+  //       return "bg-yellow-100 text-yellow-800";
+  //     case "high":
+  //       return "bg-red-100 text-red-800";
+  //     default:
+  //       return "bg-gray-100 text-gray-800";
+  //   }
+  // };
   const handleStartTask = (taskId: string) => {
 navigate(`/task/${taskId}`);
   };
@@ -152,12 +152,10 @@ navigate(`/task/${taskId}`);
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge className={getDifficultyColor(task.priority || "low")}>
-                        {task.priority || "Low"}
-                      </Badge>
+                     
                       <Badge variant="outline">
                         <Star className="h-3 w-3 mr-1" />
-                        {task.progress?.score || 0}
+                        {task.progress?.pointsEarned || 0}
                       </Badge>
                     </div>
                   </div>

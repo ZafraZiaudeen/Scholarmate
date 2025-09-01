@@ -11,21 +11,21 @@ export function HeroSection() {
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
             <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-            AI-Powered Learning Platform
+            AI-Powered ICT Learning Platform
           </div>
 
           <h1 className="font-space-grotesk font-bold text-4xl md:text-6xl lg:text-7xl text-foreground mb-6 leading-tight">
-            Your AI-Powered Learning Assistant for <span className="text-primary">Web Design</span>
+            Your AI-Powered Learning Assistant for <span className="text-primary">ICT Education</span>
           </h1>
 
           <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
-            Master O/L IT Web Design with personalized AI tutoring, comprehensive past paper practice, and intelligent
+            Master O/L ICT concepts with personalized AI tutoring, comprehensive past paper practice, video learning, and intelligent
             progress tracking. Transform your exam preparation with cutting-edge technology.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
             <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-3 text-lg">
-               <Link to="/sign-up">Start Learning Now</Link>
+               <Link to="/dashboard">Start Learning Now</Link>
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
             {/* <Button variant="outline" size="lg" className="px-8 py-3 text-lg bg-transparent">

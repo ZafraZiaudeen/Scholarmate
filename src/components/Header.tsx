@@ -34,7 +34,7 @@ export default function Header() {
       if (path === '/admin/users') return 'User Management'
       if (path === '/admin/papers') return 'Papers Management'
       if (path === '/admin/contacts') return 'Contact Management'
-      if (path === '/admin Videos') return 'Videos Management'
+      if (path === '/admin/videos') return 'Videos Management'
       if (path === '/admin/analytics') return 'Analytics'
       if (path === '/admin/settings') return 'Settings'
       return 'Admin Panel'
@@ -68,7 +68,7 @@ export default function Header() {
           <div className="flex items-center space-x-4">
             <div 
               className="flex items-center space-x-2 cursor-pointer" 
-              onClick={() => navigate(user ? (isAdmin && isAdminPath ? '/admin/dashboard' : '/dashboard') : '/')}
+              onClick={() => navigate(user ? (isAdmin && isAdminPath ? '/' : '/') : '/')}
             >
               <Brain className="h-8 w-8 text-cyan-600" />
               <span className="text-xl font-bold text-slate-900">ScholarMate</span>
@@ -311,7 +311,7 @@ export default function Header() {
                     isAdminPath ? (
                       <>
                         <button
-                          className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                          className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                           onClick={() => {
                             navigate('/admin/dashboard')
                             setShowMobileMenu(false)
@@ -321,7 +321,7 @@ export default function Header() {
                           Dashboard
                         </button>
                         <button
-                          className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                          className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                           onClick={() => {
                             navigate('/admin/analytics')
                             setShowMobileMenu(false)
@@ -331,7 +331,7 @@ export default function Header() {
                           Analytics
                         </button>
                         <button
-                          className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                          className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                           onClick={() => {
                             navigate('/admin/users')
                             setShowMobileMenu(false)
@@ -341,7 +341,7 @@ export default function Header() {
                           Users
                         </button>
                         <button
-                          className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                          className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                           onClick={() => {
                             navigate('/admin/papers')
                             setShowMobileMenu(false)
@@ -351,7 +351,7 @@ export default function Header() {
                           Papers
                         </button>
                         <button
-                          className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                          className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                           onClick={() => {
                             navigate('/admin/contacts')
                             setShowMobileMenu(false)
@@ -361,7 +361,7 @@ export default function Header() {
                           Contacts
                         </button>
                         <button
-                          className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                          className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                           onClick={() => {
                             navigate('/admin/videos')
                             setShowMobileMenu(false)
@@ -371,7 +371,7 @@ export default function Header() {
                           Videos
                         </button>
                         <button
-                          className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                          className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                           onClick={() => {
                             navigate('/admin/settings')
                             setShowMobileMenu(false)
@@ -381,7 +381,7 @@ export default function Header() {
                           Settings
                         </button>
                         <button
-                          className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                          className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                           onClick={() => {
                             navigate('/contact')
                             setShowMobileMenu(false)
@@ -392,7 +392,7 @@ export default function Header() {
                         </button>
                         {isAdmin && (
                           <button
-                            className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                            className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                             onClick={() => {
                               navigate('/dashboard')
                               setShowMobileMenu(false)
@@ -406,7 +406,7 @@ export default function Header() {
                     ) : (
                       <>
                         <button
-                          className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                          className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                           onClick={() => {
                             navigate('/dashboard')
                             setShowMobileMenu(false)
@@ -416,7 +416,7 @@ export default function Header() {
                           Dashboard
                         </button>
                         <button
-                          className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                          className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                           onClick={() => {
                             navigate('/ai')
                             setShowMobileMenu(false)
@@ -426,7 +426,7 @@ export default function Header() {
                           AI Tutor
                         </button>
                         <button
-                          className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                           onClick={() => {
                             navigate('/task')
                             setShowMobileMenu(false)
@@ -435,7 +435,7 @@ export default function Header() {
                           Tasks
                         </button>
                         <button
-                          className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                           onClick={() => {
                             navigate('/past-papers')
                             setShowMobileMenu(false)
@@ -444,7 +444,7 @@ export default function Header() {
                           Past Papers
                         </button>
                         <button
-                          className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                          className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                           onClick={() => {
                             navigate('/videos')
                             setShowMobileMenu(false)
@@ -454,7 +454,7 @@ export default function Header() {
                           Video Learning
                         </button>
                         <button
-                          className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                          className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                           onClick={() => {
                             navigate('/achievements')
                             setShowMobileMenu(false)
@@ -464,7 +464,7 @@ export default function Header() {
                           Achievements
                         </button>
                         <button
-                          className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                          className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                           onClick={() => {
                             navigate('/contact')
                             setShowMobileMenu(false)
@@ -475,7 +475,7 @@ export default function Header() {
                         </button>
                         {isAdmin && (
                           <button
-                            className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                            className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                             onClick={() => {
                               navigate('/admin/dashboard')
                               setShowMobileMenu(false)
@@ -490,7 +490,7 @@ export default function Header() {
                   ) : (
                     <>
                       <button
-                        className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                        className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                         onClick={() => {
                           navigate('/')
                           setShowMobileMenu(false)
@@ -500,7 +500,7 @@ export default function Header() {
                         Home
                       </button>
                       <button
-                        className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                        className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                         onClick={() => {
                           navigate('/contact')
                           setShowMobileMenu(false)
@@ -510,7 +510,7 @@ export default function Header() {
                         Contact Us
                       </button>
                       <button
-                        className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                         onClick={() => {
                           navigate('/sign-in')
                           setShowMobileMenu(false)
@@ -519,7 +519,7 @@ export default function Header() {
                         Login
                       </button>
                       <button
-                        className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                         onClick={() => {
                           navigate('/sign-up')
                           setShowMobileMenu(false)

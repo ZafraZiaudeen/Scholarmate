@@ -6,7 +6,7 @@ const testimonials = [
     name: "Sahan Perera",
     grade: "Grade 11 Student",
     content:
-      "The AI tutor helped me understand CSS concepts that I struggled with for months. My grades improved from C to A in just 6 weeks!",
+      "The AI tutor helped me understand networking concepts that I struggled with for months. My grades improved from C to A in just 6 weeks!",
     rating: 5,
     avatar: "/student-avatar.png",
   },
@@ -14,7 +14,7 @@ const testimonials = [
     name: "Nimali Fernando",
     grade: "O/L Graduate",
     content:
-      "The past paper practice was incredibly helpful. The AI explanations made complex topics simple to understand. Highly recommend!",
+      "The past paper practice was incredibly helpful. The AI explanations made complex ICT topics simple to understand. Highly recommend!",
     rating: 5,
     avatar: "/female-student-avatar.png",
   },
@@ -22,7 +22,7 @@ const testimonials = [
     name: "Kasun Silva",
     grade: "Grade 10 Student",
     content:
-      "I love how the platform tracks my progress and suggests what to study next. It's like having a personal tutor available 24/7.",
+      "I love how the platform tracks my progress and suggests what to study next. It's like having a personal ICT tutor available 24/7.",
     rating: 5,
     avatar: "/young-student-avatar.png",
   },
