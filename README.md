@@ -1,54 +1,55 @@
-# React + TypeScript + Vite
+# Scholarmate Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend application for Scholarmate, an AI-powered educational platform for ICT Grade 11 students.
 
-Currently, two official plugins are available:
+## Technology Stack
+- React 18 + TypeScript
+- Vite (Build Tool)
+- Redux Toolkit + RTK Query (State Management)
+- Tailwind CSS (Styling)
+- Clerk (Authentication)
+- React Router v6 (Routing)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Getting Started
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### Installation
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+### Development
+```bash
+npm run dev
 ```
+This will start the Vite development server with hot module replacement.
+
+### Build
+```bash
+npm run build
+```
+Builds the app for production to the `dist` folder.
+
+### Preview
+```bash
+npm run preview
+```
+Locally preview the production build.
+
+## ESLint Configuration
+The project uses ESLint with recommended and type-aware rules. You can expand the configuration as needed.
+
+## Project Structure
+- `src/components/` - Reusable UI components
+- `src/pages/` - Page components
+- `src/layouts/` - Layout components
+- `src/lib/` - API and utility functions
+- `src/index.css` - Global styles
+
+## Environment Variables
+- `VITE_CLERK_PUBLISHABLE_KEY` - Clerk authentication key
+- `VITE_API_BASE_URL` - Backend API base URL
+
+## Additional Notes
+- Uses React Hook Form for form handling
+- Tailwind CSS for styling with animations and typography plugins
+- Uses Radix UI components for accessibility
